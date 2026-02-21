@@ -393,9 +393,64 @@
 
     .about-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
+      grid-template-columns: 1fr; /* single column to center the about-card */
+      gap: 2rem;
       align-items: center;
+      justify-items: center; /* center children horizontally within the grid */
+    }
+
+    /* New: single about card containing vitals JS and about text stacked */
+    .about-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      box-shadow: 0 8px 20px rgba(2,6,23,0.6);
+    }
+
+    /* Constrain card width so it appears centered and proportional */
+    .about-card {
+      width: 100%;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+
+    .code-window {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.03);
+      overflow: hidden;
+    }
+
+    .code-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.6rem 0.9rem;
+      background: rgba(0,0,0,0.12);
+      border-bottom: 1px solid rgba(255,255,255,0.02);
+    }
+
+    .code-header .file-name {
+      margin-left: auto;
+      color: var(--text-muted);
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .code-body pre { 
+      margin: 0;
+      padding: 1rem;
+      overflow: auto;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    @media (max-width: 900px) {
+      .about-grid { grid-template-columns: 1fr; }
     }
 
     .about-text p {
@@ -542,10 +597,10 @@
       overflow: hidden;
       border: 1px solid var(--border-color);
       transition: var(--transition);
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
+      display: flex;
+      flex-direction: column; /* image on top, info below */
       align-items: stretch;
-      min-height: 400px;
+      min-height: auto;
       width: 100%;
     }
 
@@ -561,7 +616,7 @@
       justify-content: center;
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 220px; /* fixed preview height so image sits above info */
       overflow: hidden;
     }
 
@@ -585,13 +640,14 @@
     }
 
     .project-info {
-      padding: 2.5rem 3rem;
+      padding: 1.5rem 1.75rem;
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      gap: 1rem;
+      justify-content: flex-start;
+      gap: 0.75rem;
       width: 100%;
       min-width: 0;
+      flex: 1; /* expand to fill card so both cards match heights */
     }
 
     .project-tags {
@@ -639,11 +695,70 @@
       overflow: hidden;
       border: 1px solid var(--border-color);
       transition: var(--transition);
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
+      display: flex;
+      flex-direction: column; /* image on top, info below */
       align-items: stretch;
-      min-height: 400px;
+      min-height: auto;
       width: 100%;
+    }
+
+    /* --- Work Grid: show project + internship side-by-side on wide screens --- */
+    .work-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: stretch;
+      grid-auto-rows: 1fr;
+    }
+
+    /* Small badge label shown above each card (e.g., "Project", "Internship") */
+    .card-badge {
+      display: inline-block;
+      margin: 0.5rem 1.75rem 0;
+      padding: 0.25rem 0.6rem;
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--primary-light);
+      font-weight: 700;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      border-radius: 999px;
+      border: 1px solid rgba(99,102,241,0.12);
+    }
+
+    /* Ensure each card fills the grid cell and info area expands */
+    .work-grid > .project-card,
+    .work-grid > .internship-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    @media (max-width: 900px) {
+      .work-grid {
+        grid-template-columns: 1fr;
+      }
+      .project-card,
+      .internship-card {
+        min-height: auto;
+      }
+      .project-info,
+      .internship-info {
+        padding: 1.5rem 1.25rem;
+      }
+      .project-image i {
+        font-size: 3.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .project-title,
+      .internship-title {
+        font-size: 1.25rem;
+      }
+      .project-desc,
+      .internship-description {
+        font-size: 0.95rem;
+      }
     }
 
     .internship-card:hover {
@@ -659,8 +774,15 @@
       justify-content: center;
       position: relative;
       width: 100%;
-      height: 100%;
+      height: 220px; /* fixed preview height so image sits above info */
       overflow: hidden;
+    }
+
+    .internship-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     .internship-image svg {
@@ -670,13 +792,14 @@
     }
 
     .internship-info {
-      padding: 2.5rem 3rem;
+      padding: 1.5rem 1.75rem;
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
       overflow-y: auto;
       width: 100%;
       min-width: 0;
+      flex: 1; /* expand to fill card so both cards match heights */
     }
 
     .internship-tags {
@@ -725,6 +848,14 @@
       margin-bottom: 1.5rem;
       margin-top: 0;
       padding: 0;
+    }
+
+    /* Prevent very long lists from stretching the card; allow internal scroll */
+    .project-bullets,
+    .internship-bullets {
+      max-height: 140px;
+      overflow: auto;
+      padding-right: 0.5rem;
     }
 
     .internship-bullets li {
@@ -1482,7 +1613,7 @@
     <div class="container">
       <div class="hero-content" data-aos="fade-up">
         <div class="hero-badge">Available for Work</div>
-        <h1><span>I am PAVAN M M</span>Building data‑driven software solutions.</h1>
+        <h1><span>I am PAVAN M M</span></h1>
         <p class="hero-desc">Motivated MCA student with a passion for Java, Machine Learning, and Web Technologies. I
           bridge the gap between complex data and user-centric applications.</p>
         <div class="hero-btns">
@@ -1521,15 +1652,16 @@
   <section id="about" class="section">
     <div class="container">
       <div class="about-grid">
-        <div class="code-window" data-aos="zoom-in">
-          <div class="code-header">
-            <div class="dot red"></div>
-            <div class="dot yellow"></div>
-            <div class="dot green"></div>
-            <span class="file-name">pavan_vitals.js</span>
-          </div>
-          <div class="code-body">
-            <pre><code><span class="keyword">const</span> <span class="variable">pavan</span> = {
+        <div class="about-card" data-aos="fade-up">
+          <div class="code-window" data-aos="zoom-in">
+            <div class="code-header">
+              <div class="dot red"></div>
+              <div class="dot yellow"></div>
+              <div class="dot green"></div>
+              <span class="file-name">pavan_vitals.js</span>
+            </div>
+            <div class="code-body">
+              <pre><code><span class="keyword">const</span> <span class="variable">pavan</span> = {
   role: <span class="string">"Software Engineer"</span>,
   currentStudy: <span class="string">"MCA @ Sir MVIT"</span>,
   location: <span class="string">"Bengaluru, India"</span>,
@@ -1540,26 +1672,27 @@
     linkedin: <span class="string">"&lt;a href=&quot;https://www.linkedin.com/in/pavan-magadum-8477682b6/&quot; target=&quot;_blank&quot; style=&quot;color:inherit;text-decoration:underline;&quot;&gt;pavan-magadum&lt;/a&gt;"</span>
   }
 };</code></pre>
+            </div>
+          </div>
+
+          <div class="about-text" data-aos="fade-left">
+            <div class="section-header">
+              <h2 class="section-title">About Me</h2>
+              <p class="section-subtitle">A journey from basic coding to complex ML models.</p>
+            </div>
+            <p>I am a Master of Computer Applications student at Sir M. Visvesvaraya Institute of Technology with a strong
+              foundation in Java,Python, C, and Data Structures.</p>
+            <p>My interest lies at the intersection of traditional software development and modern data science. I thrive
+              on solving analytical problems and building systems that can make a real difference, like my recent
+              climate-aware crop recommendation system.</p>
+            <p>I'm currently seeking entry-level roles where I can apply my analytical thinking and problem-solving skills
+              to develop innovative software solutions.</p>
+            <div class="hero-btns">
+              <a href="mailto:pavanmagadum8@gmail.com" class="btn btn-primary">Contact Me</a>
+            </div>
           </div>
         </div>
       </div>
-      <div class="about-text" data-aos="fade-left">
-        <div class="section-header">
-          <h2 class="section-title">About Me</h2>
-          <p class="section-subtitle">A journey from basic coding to complex ML models.</p>
-        </div>
-        <p>I am a Master of Computer Applications student at Sir M. Visvesvaraya Institute of Technology with a strong
-          foundation in Java, C, and Data Structures.</p>
-        <p>My interest lies at the intersection of traditional software development and modern data science. I thrive
-          on solving analytical problems and building systems that can make a real difference, like my recent
-          climate-aware crop recommendation system.</p>
-        <p>I'm currently seeking entry-level roles where I can apply my analytical thinking and problem-solving skills
-          to develop innovative software solutions.</p>
-        <div class="hero-btns">
-          <a href="mailto:pavanmagadum8@gmail.com" class="btn btn-primary">Contact Me</a>
-        </div>
-      </div>
-    </div>
     </div>
   </section>
 
@@ -1612,171 +1745,71 @@
     </div>
   </section>
 
-  <section id="projects" class="section">
+  <section id="work" class="section">
     <div class="container">
       <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">Featured Project</h2>
-        <p class="section-subtitle">Selected works demonstrating my problem-solving abilities.</p>
+        <h2 class="section-title">Featured Work</h2>
+        <p class="section-subtitle">Selected project and internship — side-by-side on wider screens.</p>
       </div>
 
-      <div class="project-card" data-aos="fade-up">
-        <div class="project-image">
-          <svg width="100%" height="100%" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="min-height: 400px;">
-            <!-- Sky gradient -->
-            <defs>
-              <linearGradient id="skyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#87ceeb;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#e0f6ff;stop-opacity:1" />
-              </linearGradient>
-              <linearGradient id="fieldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#4a6741;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#2d4a2b;stop-opacity:1" />
-              </linearGradient>
-            </defs>
-            <!-- Sky -->
-            <rect width="600" height="240" fill="url(#skyGradient)"/>
-            <!-- Sun -->
-            <circle cx="500" cy="80" r="40" fill="#FFD700" opacity="0.8"/>
-            <!-- Field -->
-            <rect y="240" width="600" height="160" fill="url(#fieldGradient)"/>
-            <!-- Crops rows -->
-            <line x1="50" y1="240" x2="50" y2="400" stroke="#6B8E23" stroke-width="2"/>
-            <line x1="120" y1="240" x2="120" y2="400" stroke="#6B8E23" stroke-width="2"/>
-            <line x1="190" y1="240" x2="190" y2="400" stroke="#6B8E23" stroke-width="2"/>
-            <line x1="260" y1="240" x2="260" y2="400" stroke="#6B8E23" stroke-width="2"/>
-            <line x1="330" y1="240" x2="330" y2="400" stroke="#6B8E23" stroke-width="2"/>
-            <line x1="400" y1="240" x2="400" y2="400" stroke="#6B8E23" stroke-width="2"/>
-            <line x1="470" y1="240" x2="470" y2="400" stroke="#6B8E23" stroke-width="2"/>
-            <line x1="540" y1="240" x2="540" y2="400" stroke="#6B8E23" stroke-width="2"/>
-            <!-- Crop plants -->
-            <circle cx="50" cy="300" r="15" fill="#7CB342"/>
-            <circle cx="50" cy="340" r="18" fill="#7CB342"/>
-            <circle cx="50" cy="380" r="20" fill="#7CB342"/>
-            <circle cx="120" cy="310" r="16" fill="#8BC34A"/>
-            <circle cx="120" cy="350" r="19" fill="#8BC34A"/>
-            <circle cx="120" cy="390" r="21" fill="#8BC34A"/>
-            <circle cx="190" cy="305" r="15" fill="#7CB342"/>
-            <circle cx="190" cy="345" r="18" fill="#7CB342"/>
-            <circle cx="190" cy="385" r="20" fill="#7CB342"/>
-            <circle cx="260" cy="315" r="17" fill="#8BC34A"/>
-            <circle cx="260" cy="355" r="19" fill="#8BC34A"/>
-            <circle cx="260" cy="395" r="21" fill="#8BC34A"/>
-            <circle cx="330" cy="308" r="16" fill="#7CB342"/>
-            <circle cx="330" cy="348" r="18" fill="#7CB342"/>
-            <circle cx="330" cy="388" r="20" fill="#7CB342"/>
-            <circle cx="400" cy="312" r="17" fill="#8BC34A"/>
-            <circle cx="400" cy="352" r="19" fill="#8BC34A"/>
-            <circle cx="400" cy="392" r="21" fill="#8BC34A"/>
-            <circle cx="470" cy="306" r="15" fill="#7CB342"/>
-            <circle cx="470" cy="346" r="18" fill="#7CB342"/>
-            <circle cx="470" cy="386" r="20" fill="#7CB342"/>
-            <circle cx="540" cy="314" r="17" fill="#8BC34A"/>
-            <circle cx="540" cy="354" r="19" fill="#8BC34A"/>
-            <circle cx="540" cy="394" r="21" fill="#8BC34A"/>
-            <!-- Text overlay -->
-            <text x="300" y="200" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#fff" text-anchor="middle" opacity="0.7">Agricultural Innovation</text>
-          </svg>
-        </div>
-        <div class="project-info">
-          <div class="project-tags">
-            <span class="project-tag">Machine Learning</span>
-            <span class="project-tag">Python</span>
-            <span class="project-tag">Streamlit</span>
-          </div>
-          <h3 class="project-title">Climate-Aware Crop & Organic Fertilizer Recommender</h3>
-          <p class="project-desc">An AI-based system designed to empower farmers with data-driven insights for
-            sustainable agriculture.</p>
-          <ul class="project-bullets">
-            <li>Analyzed soil parameters (N, P, K, pH) and weather data using Python.</li>
-            <li>Built Scikit-learn models to predict crop suitability and fertilizer requirements.</li>
-            <li>Designed an interactive dashboard using Streamlit for insightful data visualization.</li>
-            <li>Mapped chemical outputs to eco-friendly organic fertilizer recommendations.</li>
-          </ul>
-          <div class="hero-btns">
-            <a href="https://github.com" class="btn btn-outline"><i class="fab fa-github"></i> GitHub Source</a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section id="internship" class="section">
-    <div class="container">
-      <div class="section-header" data-aos="fade-up">
-        <h2 class="section-title">Ongoing Internship</h2>
-        <p class="section-subtitle">Real-world experience in AI & Machine Learning development.</p>
-      </div>
-
-      <div class="internship-card" data-aos="fade-up">
-        <div class="internship-image">
-          <svg width="100%" height="100%" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg" style="min-height: 400px;">
-            <defs>
-              <linearGradient id="officeGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#87ceeb;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#e0f6ff;stop-opacity:1" />
-              </linearGradient>
-              <linearGradient id="buildingGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" style="stop-color:#3b3f5c;stop-opacity:1" />
-                <stop offset="100%" style="stop-color:#252b44;stop-opacity:1" />
-              </linearGradient>
-            </defs>
-            <!-- Sky -->
-            <rect width="600" height="220" fill="url(#officeGradient)"/>
-            <!-- Building -->
-            <rect x="80" y="150" width="440" height="250" fill="url(#buildingGradient)"/>
-            <!-- Windows -->
-            <rect x="120" y="180" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="180" y="180" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="240" y="180" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="300" y="180" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="360" y="180" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="420" y="180" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="120" y="250" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="180" y="250" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="240" y="250" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="300" y="250" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="360" y="250" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="420" y="250" width="40" height="40" fill="#FFD700" opacity="0.7"/>
-            <rect x="120" y="320" width="40" height="40" fill="#FFD700" opacity="0.5"/>
-            <rect x="180" y="320" width="40" height="40" fill="#FFD700" opacity="0.5"/>
-            <rect x="240" y="320" width="40" height="40" fill="#FFD700" opacity="0.5"/>
-            <rect x="300" y="320" width="40" height="40" fill="#FFD700" opacity="0.5"/>
-            <rect x="360" y="320" width="40" height="40" fill="#FFD700" opacity="0.5"/>
-            <rect x="420" y="320" width="40" height="40" fill="#FFD700" opacity="0.5"/>
-            <!-- Door -->
-            <rect x="270" y="340" width="60" height="80" fill="#8B4513"/>
-            <!-- Flag/Antenna -->
-            <line x1="520" y1="150" x2="520" y2="100" stroke="#666" stroke-width="2"/>
-            <circle cx="520" cy="90" r="8" fill="#6366f1"/>
-            <!-- Text -->
-            <text x="300" y="60" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="#fff" text-anchor="middle" opacity="0.7">Professional Growth</text>
-          </svg>
-        </div>
-        <div class="internship-info">
-          <div class="internship-tags">
-            <span class="internship-tag">AI & Machine Learning</span>
-            <span class="internship-tag">Python</span>
-            <span class="internship-tag">Onsite</span>
-          </div>
-          <h3 class="internship-title">AI & ML Intern</h3>
-          <p class="internship-company">Spherenex - Nexspyder Technologies Pvt Ltd.</p>
-          <p class="internship-description">
-            15-week VTU-approved onsite internship contributing to AI-driven product development. Hands-on experience in feature implementation, ML model optimization, and product testing in a professional corporate environment at Bengaluru office.
-          </p>
-          <ul class="internship-bullets">
-            <li>Feature implementation for AI-driven applications</li>
-            <li>Machine Learning model development and optimization</li>
-            <li>Quality assurance and product testing</li>
-            <li>Technical documentation and knowledge sharing</li>
-          </ul>
-          <div class="internship-meta">
-            <div class="internship-meta-item">
-              <i class="fas fa-building"></i>
-              <span>Spherenex Office, Bengaluru</span>
+      <div class="work-grid">
+        <div class="project-card" id="projects" data-aos="fade-up">
+            <div class="card-badge">Project</div>
+            <div class="project-image">
+              <img src="project.png" alt="Project Image">
             </div>
-            <div class="internship-meta-item">
-              <i class="fas fa-calendar-check"></i>
-              <span>Ongoing | 15 Weeks</span>
+          <div class="project-info">
+            <div class="project-tags">
+              <span class="project-tag">Machine Learning</span>
+              <span class="project-tag">Python</span>
+              <span class="project-tag">Streamlit</span>
+            </div>
+            <h3 class="project-title">Climate-Aware Crop & Organic Fertilizer Recommender</h3>
+            <p class="project-desc">An AI-based system designed to empower farmers with data-driven insights for
+              sustainable agriculture.</p>
+            <ul class="project-bullets">
+              <li>Analyzed soil parameters (N, P, K, pH) and weather data using Python.</li>
+              <li>Built Scikit-learn models to predict crop suitability and fertilizer requirements.</li>
+              <li>Designed an interactive dashboard using Streamlit for insightful data visualization.</li>
+              <li>Mapped chemical outputs to eco-friendly organic fertilizer recommendations.</li>
+            </ul>
+            <div class="hero-btns">
+              <a href="https://crop-and-organic-fertilizer.onrender.com/" class="btn btn-outline"><i class="fab fa-github"></i> View Project</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="internship-card" id="internship" data-aos="fade-up">
+          <div class="card-badge">Internship</div>
+          <div class="internship-image">
+            <img src="internship.png" alt="Internship Image">
+          </div>
+          <div class="internship-info">
+            <div class="internship-tags">
+              <span class="internship-tag">AI & Machine Learning</span>
+              <span class="internship-tag">Python</span>
+              <span class="internship-tag">Onsite</span>
+            </div>
+            <h3 class="internship-title">AI & ML Intern</h3>
+            <p class="internship-company">Spherenex - Nexspyder Technologies Pvt Ltd.</p>
+            <p class="internship-description">
+              15-week VTU-approved onsite internship contributing to AI-driven product development. Hands-on experience in feature implementation, ML model optimization, and product testing in a professional corporate environment at Bengaluru office.
+            </p>
+            <ul class="internship-bullets">
+              <li>Feature implementation for AI-driven applications</li>
+              <li>Machine Learning model development and optimization</li>
+              <li>Quality assurance and product testing</li>
+              <li>Technical documentation and knowledge sharing</li>
+            </ul>
+            <div class="internship-meta">
+              <div class="internship-meta-item">
+                <i class="fas fa-building"></i>
+                <span>Spherenex Office, Bengaluru</span>
+              </div>
+              <div class="internship-meta-item">
+                <i class="fas fa-calendar-check"></i>
+                <span>Ongoing | 15 Weeks</span>
+              </div>
             </div>
           </div>
         </div>
